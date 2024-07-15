@@ -6,6 +6,13 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"type": "java",
+			"name": "sample",
+			"request": "launch",
+			"mainClass": "com.example.sample",
+			"projectName": "demo"
+		},
+		{
 			"name": "Run Extension",
 			"type": "extensionHost",
 			"request": "launch",

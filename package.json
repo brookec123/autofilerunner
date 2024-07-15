@@ -1,7 +1,9 @@
 {
-  "name": "autofileexecuter",
-  "displayName": "AutoFileExecuter",
+  "name": "autofilerunner",
+  "displayName": "AutoFileRunner",
   "description": "",
+  "icon": "icon/auto-file-and-function-comments-icon.png",
+  "publisher": "brookec",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.91.0"
@@ -9,13 +11,72 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "autofilerunner.run-file"
+  ],
   "main": "./extension.js",
   "contributes": {
-    "commands": [{
-      "command": "autofileexecuter.helloWorld",
-      "title": "Hello World"
-    }]
+    "configuration": {
+      "properties": {
+        "brookec.autofilerunner.run-file.file-location": {
+          "type": "string",
+          "default": "",
+          "description": "Location of the file to run. To find it, go to the VsCode explorer, right click on the name of the file and then click \"Copy Path\" and then paste it here. Example: C:\\Users\\brookec\\Desktop\\autofilerunner\\test\\sample.py"
+        },
+        "brookec.autofilerunner.run-file.default-commands": {
+          "type": "array",
+          "default": [
+            ""
+          ],
+          "description": "Commands to run any file."
+        },
+        "brookec.autofilerunner.run-file.python-commands": {
+          "type": "array",
+          "default": [
+            "python %fileLocation%"
+          ],
+          "description": "Commands to run a python file."
+        },
+        "brookec.autofilerunner.run-file.c-commands": {
+          "type": "array",
+          "default": [
+            "gcc %fileLocation% -o %fileName%",
+            ".\\%fileName%"
+          ],
+          "description": "Commands to run a C file."
+        },
+        "brookec.autofilerunner.run-file.cpp-commands": {
+          "type": "array",
+          "default": [
+            "g++ %fileLocation% -o %fileName%",
+            ".\\%fileName%"
+          ],
+          "description": "Commands to run a C++ file."
+        },
+        "brookec.autofilerunner.run-file.java-commands": {
+          "type": "array",
+          "default": [
+            "javac %fileLocation%",
+            "java %fileLocation%"
+          ],
+          "description": "Commands to run a Java file."
+        }
+      },
+      "title": "Auto File Runner"
+    },
+    "commands": [
+      {
+        "command": "autofilerunner.run-file",
+        "title": "Run File"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "autofilerunner.run-file",
+        "key": "alt+f8",
+        "mac": "f8"
+      }
+    ]
   },
   "scripts": {
     "lint": "eslint .",
@@ -31,5 +92,9 @@
     "mocha": "^10.2.0",
     "typescript": "^5.2.2",
     "@vscode/test-electron": "^2.3.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brookec123/autofilerunner.git"
   }
 }
