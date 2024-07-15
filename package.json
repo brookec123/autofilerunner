@@ -18,46 +18,61 @@
   "contributes": {
     "configuration": {
       "properties": {
-        "brookec.autofilerunner.run-file.file-location": {
+        "brookec.autofilerunner.run-file.file-path": {
           "type": "string",
           "default": "",
           "description": "Location of the file to run. To find it, go to the VsCode explorer, right click on the name of the file and then click \"Copy Path\" and then paste it here. Example: C:\\Users\\brookec\\Desktop\\autofilerunner\\test\\sample.py"
         },
         "brookec.autofilerunner.run-file.default-commands": {
           "type": "array",
-          "default": [
-            ""
-          ],
+          "items": {
+            "type": "string"
+          },
+          "default": [],
           "description": "Commands to run any file."
         },
         "brookec.autofilerunner.run-file.python-commands": {
           "type": "array",
+          "items": {
+            "type": "string"
+          },
           "default": [
-            "python %fileLocation%"
+            "python %filePath%"
           ],
           "description": "Commands to run a python file."
         },
         "brookec.autofilerunner.run-file.c-commands": {
           "type": "array",
+          "items": {
+            "type": "string"
+          },
           "default": [
-            "gcc %fileLocation% -o %fileName%",
+            "cd %baseDirectory%",
+            "gcc %filePath% -o %fileName%",
             ".\\%fileName%"
           ],
           "description": "Commands to run a C file."
         },
         "brookec.autofilerunner.run-file.cpp-commands": {
           "type": "array",
+          "items": {
+            "type": "string"
+          },
           "default": [
-            "g++ %fileLocation% -o %fileName%",
+            "cd %baseDirectory%",
+            "g++ %filePath% -o %fileName%",
             ".\\%fileName%"
           ],
           "description": "Commands to run a C++ file."
         },
         "brookec.autofilerunner.run-file.java-commands": {
           "type": "array",
+          "items": {
+            "type": "string"
+          },
           "default": [
-            "javac %fileLocation%",
-            "java %fileLocation%"
+            "javac -source 1.8 -target 1.8 -d target/classes -sourcepath src/main/java %filePath%",
+            "java -cp target/classes com.example.%fileName%"
           ],
           "description": "Commands to run a Java file."
         }
@@ -73,8 +88,8 @@
     "keybindings": [
       {
         "command": "autofilerunner.run-file",
-        "key": "alt+f8",
-        "mac": "f8"
+        "key": "alt+f5",
+        "mac": "alt+f5"
       }
     ]
   },

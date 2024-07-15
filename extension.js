@@ -1,5 +1,4 @@
 // extension.js
-
 const vscode = require('vscode');
 
 function activate(context) {
@@ -7,89 +6,56 @@ function activate(context) {
 	let disposable = vscode.commands.registerCommand('autofilerunner.run-file', function () {
 		outputChannel.show();
 		const config = vscode.workspace.getConfiguration("brookec.autofilerunner.run-file");
-		let fileLocation = config.get("file-location");
-		let fileName = fileLocation.split("/").pop();
-		var fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length) || fileName;
-		let baseDir = fileLocation.substring(0, fileLocation.lastIndexOf("\\"));
-		outputChannel.appendLine("hi");
-		if (fileLocation) {
+		let filePath = config.get("file-path");
+		let fileName = filePath.split("\\").pop();
+		let fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
+		fileName = fileName.substring(0, fileName.lastIndexOf("."));
+		let baseDir = filePath.substring(0, filePath.lastIndexOf("\\"));
+
+		outputChannel.appendLine(`File Location: ${filePath}`);
+		outputChannel.appendLine(`File Name: ${fileName}`);
+		outputChannel.appendLine(`File Extension: ${fileExtension}`);
+		outputChannel.appendLine(`Base Directory: ${baseDir}`);
+
+		if (filePath) {
 			// Open the file
-			let uri = vscode.Uri.file(fileLocation);
+			let uri = vscode.Uri.file(filePath);
 			vscode.workspace.openTextDocument(uri).then(doc => {
 				vscode.window.showTextDocument(doc);
 				// Execute the file based on its type or just launch it if possible
 				vscode.commands.executeCommand('workbench.action.terminal.new').then(() => {
 					const terminal = vscode.window.activeTerminal;
 					if (terminal) {
-						let commands = config.get("brookec.autofilerunner.run-file.default-commands");
-						if (Array.isArray(commands)) {
-							let commandsArray = commands;
-
-							for (let i = 0; i < commandsArray.length; i++) {
-								commandsArray[i] = commandsArray[i].replace("%fileLocation%", fileLocation);
-								commandsArray[i] = commandsArray[i].replace("%fileName%", fileName);
-								commandsArray[i] = commandsArray[i].replace("%baseDirectory%", baseDir);
-								terminal.sendText(commandsArray[i]);
-							}
-						}
-
+						let commands = [];
 						if (fileExtension === "py") {
 							outputChannel.appendLine("python");
-
-							if (Array.isArray(commands)) {
-								outputChannel.appendLine("hi " + commands.toString());
-								let commandsArray = commands;
-
-								for (let i = 0; i < commandsArray.length; i++) {
-									commandsArray[i] = commandsArray[i].replace("%fileLocation%", fileLocation);
-									commandsArray[i] = commandsArray[i].replace("%fileName%", fileName);
-									commandsArray[i] = commandsArray[i].replace("%baseDirectory%", baseDir);
-									outputChannel.appendLine(commandsArray[i]);
-									terminal.sendText(commandsArray[i]);
-								}
-							}
-							else {
-								outputChannel.appendLine("c: " + commands);
-							}
+							commands = config.get("python-commands");
+						} else if (fileExtension === "c") {
+							outputChannel.appendLine("c");
+							commands = config.get("c-commands");
+						} else if (fileExtension === "cpp") {
+							outputChannel.appendLine("cpp");
+							commands = config.get("cpp-commands");
+						} else if (fileExtension === "java") {
+							outputChannel.appendLine("java");
+							commands = config.get("java-commands");
 						}
-						else if (fileExtension === "c") {
-							commands = config.get("brookec.autofilerunner.run-file.c-commands");
-							if (Array.isArray(commands)) {
-								let commandsArray = commands;
-
-								for (let i = 0; i < commandsArray.length; i++) {
-									commandsArray[i] = commandsArray[i].replace("%fileLocation%", fileLocation);
-									commandsArray[i] = commandsArray[i].replace("%fileName%", fileName);
-									commandsArray[i] = commandsArray[i].replace("%baseDirectory%", baseDir);
-									terminal.sendText(commandsArray[i]);
-								}
-							}
+						else {
+							outputChannel.appendLine("default");
+							commands = config.get("default-commands");
 						}
-						else if (fileExtension === "cpp") {
-							commands = config.get("brookec.autofilerunner.run-file.cpp-commands");
-							if (Array.isArray(commands)) {
-								let commandsArray = commands;
 
-								for (let i = 0; i < commandsArray.length; i++) {
-									commandsArray[i] = commandsArray[i].replace("%fileLocation%", fileLocation);
-									commandsArray[i] = commandsArray[i].replace("%fileName%", fileName);
-									commandsArray[i] = commandsArray[i].replace("%baseDirectory%", baseDir);
-									terminal.sendText(commandsArray[i]);
-								}
-							}
-						}
-						else if (fileExtension === "java") {
-							commands = config.get("brookec.autofilerunner.run-file.java-commands");
-							if (Array.isArray(commands)) {
-								let commandsArray = commands;
-
-								for (let i = 0; i < commandsArray.length; i++) {
-									commandsArray[i] = commandsArray[i].replace("%fileLocation%", fileLocation);
-									commandsArray[i] = commandsArray[i].replace("%fileName%", fileName);
-									commandsArray[i] = commandsArray[i].replace("%baseDirectory%", baseDir);
-									terminal.sendText(commandsArray[i]);
-								}
-							}
+						if (Array.isArray(commands)) {
+							commands.forEach(command => {
+								let cmd = command
+									.replace(/%filePath%/g, filePath)
+									.replace(/%fileName%/g, fileName)
+									.replace(/%baseDirectory%/g, baseDir);
+								outputChannel.appendLine(`Executing command: ${cmd}`);
+								terminal.sendText(cmd);
+							});
+						} else {
+							outputChannel.appendLine("Commands not defined or not an array.");
 						}
 					}
 				});
@@ -99,11 +65,9 @@ function activate(context) {
 		}
 	});
 
-
 	context.subscriptions.push(disposable);
 }
 
-// This method is called when your extension is deactivated
 function deactivate() { }
 
 module.exports = {

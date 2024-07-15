@@ -1,22 +1,22 @@
 {
-  "brookec.autofilerunner.run-file.file-location": "C:\\Users\\brook\\OneDrive\\Desktop\\SideProjects\\AutoFileRunner\\autofilerunner\\test\\sample.py",
-  "brookec.autofilerunner.run-file.default-commands": [
-    ""
-  ],
+  "brookec.autofilerunner.run-file.file-path": "C:\\Users\\brook\\OneDrive\\Desktop\\SideProjects\\AutoFileRunner\\autofilerunner\\test\\sample.py",
+  "brookec.autofilerunner.run-file.default-commands": [],
   "brookec.autofilerunner.run-file.python-commands": [
-    "python %fileLocation%"
+    "python %filePath%"
   ],
   "brookec.autofilerunner.run-file.c-commands": [
-    "gcc %fileLocation% -o %fileName%",
+    "cd %baseDirectory%",
+    "gcc %filePath% -o %fileName%",
     ".\\%fileName%"
   ],
   "brookec.autofilerunner.run-file.cpp-commands": [
-    "g++ %fileLocation% -o %fileName%",
+    "cd %baseDirectory%",
+    "g++ %filePath% -o %fileName%",
     ".\\%fileName%"
   ],
   "brookec.autofilerunner.run-file.java-commands": [
-    "javac %fileLocation%",
-    "java %fileLocation%"
+    "javac -source 1.8 -target 1.8 -d target/classes -sourcepath src/main/java %filePath%",
+    "java -cp target/classes com.example.%fileName%"
   ],
   "files.associations": {
     "stdio.h": "c"
