@@ -2,9 +2,9 @@
 const vscode = require('vscode');
 
 function activate(context) {
-	const outputChannel = vscode.window.createOutputChannel('My Extension');
+	// const outputChannel = vscode.window.createOutputChannel('Auto File Runner'); // for testing only
 	let disposable = vscode.commands.registerCommand('autofilerunner.run-file', function () {
-		outputChannel.show();
+		// outputChannel.show();
 		const config = vscode.workspace.getConfiguration("brookec.autofilerunner.run-file");
 		let filePath = config.get("file-path");
 		let fileName = filePath.split("\\").pop();
@@ -12,10 +12,10 @@ function activate(context) {
 		fileName = fileName.substring(0, fileName.lastIndexOf("."));
 		let baseDir = filePath.substring(0, filePath.lastIndexOf("\\"));
 
-		outputChannel.appendLine(`File Location: ${filePath}`);
-		outputChannel.appendLine(`File Name: ${fileName}`);
-		outputChannel.appendLine(`File Extension: ${fileExtension}`);
-		outputChannel.appendLine(`Base Directory: ${baseDir}`);
+		// outputChannel.appendLine(`File Location: ${filePath}`);
+		// outputChannel.appendLine(`File Name: ${fileName}`);
+		// outputChannel.appendLine(`File Extension: ${fileExtension}`);
+		// outputChannel.appendLine(`Base Directory: ${baseDir}`);
 
 		if (filePath) {
 			// Open the file
@@ -28,20 +28,20 @@ function activate(context) {
 					if (terminal) {
 						let commands = [];
 						if (fileExtension === "py") {
-							outputChannel.appendLine("python");
+							// outputChannel.appendLine("python");
 							commands = config.get("python-commands");
 						} else if (fileExtension === "c") {
-							outputChannel.appendLine("c");
+							// outputChannel.appendLine("c");
 							commands = config.get("c-commands");
 						} else if (fileExtension === "cpp") {
-							outputChannel.appendLine("cpp");
+							// outputChannel.appendLine("cpp");
 							commands = config.get("cpp-commands");
 						} else if (fileExtension === "java") {
-							outputChannel.appendLine("java");
+							// outputChannel.appendLine("java");
 							commands = config.get("java-commands");
 						}
 						else {
-							outputChannel.appendLine("default");
+							// outputChannel.appendLine("default");
 							commands = config.get("default-commands");
 						}
 
@@ -51,11 +51,11 @@ function activate(context) {
 									.replace(/%filePath%/g, filePath)
 									.replace(/%fileName%/g, fileName)
 									.replace(/%baseDirectory%/g, baseDir);
-								outputChannel.appendLine(`Executing command: ${cmd}`);
+								// outputChannel.appendLine(`Executing command: ${cmd}`);
 								terminal.sendText(cmd);
 							});
 						} else {
-							outputChannel.appendLine("Commands not defined or not an array.");
+							// outputChannel.appendLine("Commands not defined or not an array.");
 						}
 					}
 				});

@@ -1,11 +1,20 @@
 # Auto File Runner README
 
-This extension allows you to run a specific file (specified for each folder). All you have to do is press `alt+f5`.
+This extension allows you to run a specific file (specified for each folder) with a single key press. All you have to do is press `Alt+F5`.
 
 ## Features
 
-- Run a specific file with a single keypress.
-- Supports Python, C, C++, and Java files.
+- **Run Specified Files**: Automatically runs the specified file based on its type.
+- **Auto Open in Editor**: Opens the file in the editor before running it.
+- **Configurable Commands**: Provides configurable commands for different file types for the supported languages.
+
+## Currently Supported Languages
+<div>
+  <span style="color:#19e044;padding-left: 25px;">&#x2714;</span> Python <br>
+  <span style="color:#19e044;padding-left: 25px;">&#x2714;</span> C <br>
+  <span style="color:#19e044;padding-left: 25px;">&#x2714;</span> C++ <br>
+  <span style="color:#19e044;padding-left: 25px;">&#x2714;</span> Java
+</div>
 
 ## Extension Settings
 
@@ -18,22 +27,41 @@ This extension contributes the following settings:
 * `autofilerunner.run-file.cpp-commands`: Commands to run a C++ file.
 * `autofilerunner.run-file.java-commands`: Commands to run a Java file.
 
-### Custom Variables for Settings
+### Example Commands
 
-- `%filePath%`: The full file path. Example: `C:\Users\brookec\Desktop\AutoFileRunner\autofilerunner\test\sample.py`
-- `%fileName%`: The file name without the extension. Example: `sample`
-- `%fileExtension%`: The file extension. Example: `py`
-- `%baseDirectory%`: The base directory path. Example: `C:\Users\brookec\Desktop\AutoFileRunner\autofilerunner\test\`
+#### Python
+```sh
+python %filePath%
+```
 
-## Known Issues
+#### C
+```sh
+cd %baseDirectory%
+gcc %filePath% -o %fileName%
+.\\%fileName%
+```
 
-N/A.
+#### C++
+```sh
+cd %baseDirectory%
+g++ %filePath% -o %fileName%
+.\\%fileName%
+```
+
+#### Java
+```sh
+javac -source 1.8 -target 1.8 -d target/classes -sourcepath src/main/java %filePath%
+java -cp target/classes com.example.%fileName%
+```
 
 ## Release Notes
 
 ### 0.0.1
 
 Initial release of Auto File Runner.
+
+## Contributing
+If you encounter any issues or have suggestions for improvements, feel free to [open an issue](https://github.com/brookec123/autofilerunner/issues) on GitHub.
 
 ---
 

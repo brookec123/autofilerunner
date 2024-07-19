@@ -2,7 +2,7 @@
   "name": "autofilerunner",
   "displayName": "AutoFileRunner",
   "description": "",
-  "icon": "icon/auto-file-and-function-comments-icon.png",
+  "icon": "icon/auto-file-runner.png",
   "publisher": "brookec",
   "version": "0.0.1",
   "engines": {

@@ -1,5 +1,5 @@
 {
-  "brookec.autofilerunner.run-file.file-path": "C:\\Users\\brook\\OneDrive\\Desktop\\SideProjects\\AutoFileRunner\\autofilerunner\\test\\sample.py",
+  "brookec.autofilerunner.run-file.file-path": "C:\\Users\\brookec\\Desktop\\autofilerunner\\test\\sample.py",
   "brookec.autofilerunner.run-file.default-commands": [],
   "brookec.autofilerunner.run-file.python-commands": [
     "python %filePath%"
